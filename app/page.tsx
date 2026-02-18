@@ -8,10 +8,9 @@ export default function Home() {
           Hand Poured · Norfolk · Small Batch Studio
         </p>
 
-        <h1 className="text-4xl md:text-6xl tracking-[0.1em]">
-          TILLY AND ROO
-        </h1>
-
+        <h1 className="text-3xl md:text-6xl tracking-[0.05em] md:tracking-[0.1em] whitespace-nowrap">
+  TILLY AND ROO
+</h1>
         <p className="mt-6 md:mt-10 text-base md:text-lg text-black/70 max-w-xl mx-auto leading-relaxed">
           Wax melts crafted for quiet evenings, fresh linen mornings
           and homes that feel calm, warm and beautifully scented.
