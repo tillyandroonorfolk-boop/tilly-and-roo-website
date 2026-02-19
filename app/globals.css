@@ -38,11 +38,14 @@ body::before {
   content: "";
   position: fixed;
   inset: 0;
-  background-image: url("/noise.png");
-  background-repeat: repeat;
-  opacity: 0.25; 
   pointer-events: none;
   z-index: 9999;
+  opacity: 0.15;
+  background-image:
+    radial-gradient(rgba(0,0,0,0.04) 1px, transparent 1px);
+  background-size: 3px 3px;
 }
+
+
 
 
