@@ -58,7 +58,7 @@ export default function Home() {
         className="w-full mb-6 rounded-lg"
       />
 
-      <h3 className="text-lg md:text-xl tracking-[0.15em] mb-4">
+      <h3 className="text-lg md:text-xl tracking-[0.08em] font-medium mb-4 text-black/90">
         {name}
       </h3>
 
@@ -71,7 +71,7 @@ export default function Home() {
           {notes}
         </p>
 
-        <div className="text-sm space-y-1 mb-6">
+        <div className="text-sm space-y-1 mb-6 text-black/70">
           <p>Wax Melt Shell — £4.50</p>
           <p>Snap Bar — £2.50</p>
           <p>Bubble Jar — £6.50</p>
@@ -84,7 +84,7 @@ export default function Home() {
         <a
           href={instaLink}
           target="_blank"
-          className="inline-block px-6 py-3 bg-black text-white text-xs tracking-[0.2em] rounded-full hover:bg-[#7C8A6A] transition-all"
+          className="inline-block px-6 py-3 bg-[#7C8A6A] text-white text-xs tracking-[0.15em] rounded-full hover:opacity-90 transition-all"
         >
           ORDER VIA INSTAGRAM
         </a>
@@ -97,7 +97,7 @@ export default function Home() {
 
       {/* HERO */}
       <section className="max-w-4xl mx-auto px-6 py-20 md:py-32 text-center">
-        <h1 className="text-3xl md:text-6xl tracking-[0.08em] mb-6">
+       <h1 className="text-3xl md:text-6xl tracking-[0.04em] font-light mb-6">
           TILLY & ROO
         </h1>
 
@@ -115,7 +115,7 @@ export default function Home() {
       </section>
 
       {/* COSY */}
-      <section className="py-20 md:py-32 px-6 bg-[#F5F6F3]">
+      <section className="py-20 md:py-32 px-6 bg-[#F7F7F4]">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-xl md:text-2xl tracking-[0.25em] mb-14 md:mb-24 text-center text-[#7C8A6A]">
             COSY EDIT
