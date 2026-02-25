@@ -71,7 +71,7 @@ export default function Home() {
       <div className="bg-white p-8 rounded-xl border border-black/5 text-center shadow-sm hover:shadow-md transition-all">
 
         <img
-          src="/images/clamshell.jpg"
+          src="/images/clamshells1.jpeg"
           alt={name}
           className="w-full mb-6 rounded-lg"
         />
