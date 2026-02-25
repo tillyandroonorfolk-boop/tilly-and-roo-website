@@ -30,6 +30,16 @@ export default function Home() {
     ["AUTUMN FOLDED BLANKETS","Softly fruity and warm. Crisp orchard fruits are wrapped in cashmere-like warmth, creating a cosy autumn scent that feels comforting and familiar.","Apple · Pear · Soft Spice"],
   ];
 
+  const freshScents = [
+    ["CLEAN SKIN","Fresh, soft and comforting. Clean cotton and airy freshness melt into a gentle skin-like softness that feels light, modern and effortlessly clean.","Clean Cotton · White Musk · Fresh Air"],
+    ["SUNLIT CITRUS","Bright and uplifting. Juicy citrus zest meets soft green freshness, creating a clean, vibrant scent that feels warm, fresh and full of light.","Lemon · Orange Peel · Green Notes"],
+    ["PINK POP","Playful and sweet. Sugared pineapple and ripe strawberries swirl together into a fun, creamy fruit scent that feels bright, cheerful and indulgent.","Pineapple · Strawberry · Cream"],
+    ["GREEN ESCAPE","Fresh, green and spa-clean. Watery botanicals and cool herbal air create a calm, leafy scent that feels cleansing, natural and relaxing.","Eucalyptus · Green Leaves · Herbal Notes"],
+    ["BERRY SILK","Smooth and elegant. Juicy dark berries are softened with creamy vanilla and a hint of coastal freshness, creating a rich yet airy fruity blend.","Blackberry · Vanilla · Coastal Air"],
+    ["EVENING MOJITO","Zesty and refreshing. Bright citrus notes are lifted with soft herbal freshness for a clean, energising scent that feels crisp and uplifting.","Lime · Mint · Citrus Zest"],
+    ["MIDNIGHT BEACH","Warm and atmospheric. Smoky embers and toasted woods blend with smooth sandalwood and a hint of citrus, evoking a beach fire after dark.","Sandalwood · Toasted Woods · Citrus Peel"],
+  ];
+
   const addToBasket = (item: BasketItem) => {
     setBasket(prev => [...prev, item]);
   };
@@ -39,7 +49,6 @@ export default function Home() {
   const discount = subtotal >= 25 ? subtotal * 0.1 : 0;
   const total = subtotal + postage - discount;
 
-  // Generate simple unique order number
   const generateOrderNumber = () => {
     const random = Math.floor(1000 + Math.random() * 9000);
     return `TR-${Date.now().toString().slice(-6)}-${random}`;
@@ -55,7 +64,7 @@ export default function Home() {
 
     const orderLines = basket
       .map(item => `${item.qty} x ${item.name} (${item.format})`)
-      .join("\n");
+      .join("\r\n");
 
     const body = `
 Order Number: ${orderNumber}
@@ -73,9 +82,16 @@ Subtotal: £${subtotal.toFixed(2)}
 Post & Pack: £${postage.toFixed(2)}
 Discount: -£${discount.toFixed(2)}
 Total: £${total.toFixed(2)}
-    `;
+`;
 
-    window.location.href = `mailto:hello@tillandroo.co.uk?subject=Tilly & Roo Order ${orderNumber}&body=${encodeURIComponent(body)}`;
+    const mailtoLink =
+      "mailto:hello@tillandroo.co.uk" +
+      "?subject=" +
+      encodeURIComponent(`Tilly & Roo Order ${orderNumber}`) +
+      "&body=" +
+      encodeURIComponent(body);
+
+    window.open(mailtoLink);
   };
 
   const Card = (name: string, description: string, notes: string) => {
@@ -133,8 +149,24 @@ Total: £${total.toFixed(2)}
     <main className="min-h-screen bg-white text-black pb-56">
 
       <section className="py-20 px-6 bg-[#F7F7F4]">
-        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
-          {cosyScents.map(([n,d,notes]) => Card(n,d,notes))}
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xl tracking-[0.25em] mb-16 text-center text-[#7C8A6A]">
+            COSY EDIT
+          </h2>
+          <div className="grid md:grid-cols-2 gap-10">
+            {cosyScents.map(([n,d,notes]) => Card(n,d,notes))}
+          </div>
+        </div>
+      </section>
+
+      <section className="py-20 px-6 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <h2 className="text-xl tracking-[0.25em] mb-16 text-center text-[#7C8A6A]">
+            FRESH EDIT
+          </h2>
+          <div className="grid md:grid-cols-2 gap-10">
+            {freshScents.map(([n,d,notes]) => Card(n,d,notes))}
+          </div>
         </div>
       </section>
 
