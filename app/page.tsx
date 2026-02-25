@@ -41,10 +41,7 @@ export default function Home() {
 
         <div className="pt-6 border-t border-black/5">
 
-          <p className="text-xs tracking-[0.25em] text-[#7C8A6A] uppercase mb-6">
-            {notes}
-          </p>
-
+         
           {/* Pricing */}
           <div className="text-sm space-y-1 mb-6 text-black/70">
             <p>Wax Melt Shell — £4.50</p>
