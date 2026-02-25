@@ -2,187 +2,170 @@
 
 import { useState } from "react";
 
+type BasketItem = {
+  name: string;
+  format: string;
+  price: number;
+  qty: number;
+};
+
 export default function Home() {
+
+  const [basket, setBasket] = useState<BasketItem[]>([]);
 
   const cosyScents = [
     ["SUNDAY LINEN",
       "Softly fresh and comforting. Clean cotton sheets and fresh air are wrapped in gentle warmth, creating that just-washed, slow Sunday morning feeling.",
       "Cotton · Fresh Air · Soft Musk"],
-
     ["CASHMERE MORNINGS",
       "Smooth, cosy and quietly luxurious. Warm amber and soft cashmere notes settle into a creamy, comforting warmth that feels calm and elegant.",
       "Amber · Cashmere · Vanilla"],
-
-    ["QUIET HOUSE",
-      "Peaceful and tender. Fresh laundry and clean cotton blend with soft powdery notes for a soothing, barely-there scent that feels like a calm, tidy home.",
-      "Clean Cotton · Powder · White Musk"],
-
-    ["AMBER HEARTH",
-      "Rich and inviting. Juicy dark plum melts into golden amber and soft vanilla, creating a warm, glowing scent that feels cosy, deep and comforting.",
-      "Plum · Amber · Vanilla"],
-
-    ["WOODSMOKE WOOL",
-      "Warm, smoky and softly sweet. Toasted woods and gentle embers are softened with creamy vanilla, giving a fireside feel without harsh or heavy woods.",
-      "Smoked Woods · Embers · Creamy Vanilla"],
-
-    ["GREENHOUSE CALM",
-      "Clean, green and serene. Cool birch woods blend with light floral freshness for a calm, airy scent that feels natural, balanced and restorative.",
-      "Birch Wood · Soft Florals · Green Leaves"],
-
-    ["AUTUMN FOLDED BLANKETS",
-      "Softly fruity and warm. Crisp orchard fruits are wrapped in cashmere-like warmth, creating a cosy autumn scent that feels comforting and familiar.",
-      "Apple · Pear · Soft Spice"],
   ];
 
-  const freshScents = [
-    ["CLEAN SKIN",
-      "Fresh, soft and comforting. Clean cotton and airy freshness melt into a gentle skin-like softness that feels light, modern and effortlessly clean.",
-      "Clean Cotton · White Musk · Fresh Air"],
-
-    ["SUNLIT CITRUS",
-      "Bright and uplifting. Juicy citrus zest meets soft green freshness, creating a clean, vibrant scent that feels warm, fresh and full of light.",
-      "Lemon · Orange Peel · Green Notes"],
-
-    ["PINK POP",
-      "Playful and sweet. Sugared pineapple and ripe strawberries swirl together into a fun, creamy fruit scent that feels bright, cheerful and indulgent.",
-      "Pineapple · Strawberry · Cream"],
-
-    ["GREEN ESCAPE",
-      "Fresh, green and spa-clean. Watery botanicals and cool herbal air create a calm, leafy scent that feels cleansing, natural and relaxing.",
-      "Eucalyptus · Green Leaves · Herbal Notes"],
-
-    ["BERRY SILK",
-      "Smooth and elegant. Juicy dark berries are softened with creamy vanilla and a hint of coastal freshness, creating a rich yet airy fruity blend.",
-      "Blackberry · Vanilla · Coastal Air"],
-
-    ["EVENING MOJITO",
-      "Zesty and refreshing. Bright citrus notes are lifted with soft herbal freshness for a clean, energising scent that feels crisp and uplifting.",
-      "Lime · Mint · Citrus Zest"],
-
-    ["MIDNIGHT BEACH",
-      "Warm and atmospheric. Smoky embers and toasted woods blend with smooth sandalwood and a hint of citrus, evoking a beach fire after dark.",
-      "Sandalwood · Toasted Woods · Citrus Peel"],
+  const formats = [
+    { label: "Wax Melt Shell — £4.50", price: 4.5 },
+    { label: "Snap Bar — £2.50", price: 2.5 },
+    { label: "Bubble Jar — £6.50", price: 6.5 },
   ];
+
+  const addToBasket = (name: string, format: string, price: number, qty: number) => {
+    setBasket(prev => [...prev, { name, format, price, qty }]);
+  };
+
+  const subtotal = basket.reduce((acc, item) => acc + item.price * item.qty, 0);
+  const postage = basket.length > 0 ? 6 : 0;
+  const discount = subtotal >= 25 ? subtotal * 0.1 : 0;
+  const total = subtotal + postage - discount;
+
+  const emailBody = basket
+    .map(item => `${item.qty} x ${item.name} (${item.format})`)
+    .join("%0D%0A");
+
+  const checkoutLink = `mailto:hello@tillandroo.co.uk?subject=Tilly & Roo Order&body=${emailBody}%0D%0ASubtotal: £${subtotal.toFixed(
+    2
+  )}%0D%0APostage: £${postage.toFixed(
+    2
+  )}%0D%0ADiscount: £${discount.toFixed(
+    2
+  )}%0D%0ATotal: £${total.toFixed(2)}`;
 
   const Card = (name: string, description: string, notes: string) => {
+    const [selectedFormat, setSelectedFormat] = useState(formats[0]);
     const [qty, setQty] = useState(1);
 
     return (
-      <div className="bg-white p-8 rounded-xl border border-black/5 text-center shadow-sm hover:shadow-md transition-all">
+      <div className="bg-white p-8 rounded-xl border border-black/5 text-center shadow-sm">
 
         <img
           src="/images/clamshells1.jpeg"
-          alt={name}
-          className="w-full mb-6 rounded-lg"
+          alt=""
+          className="w-full mb-6 rounded-lg object-cover"
         />
 
-        {/* ONLY TITLE — no duplicate */}
         <h3 className="text-lg md:text-xl tracking-[0.08em] font-medium mb-4 text-[#7C8A6A]">
           {name}
         </h3>
 
-        <p className="text-black/70 leading-relaxed text-sm md:text-base mb-6">
+        <p className="text-black/70 leading-relaxed text-sm mb-6">
           {description}
         </p>
 
-        <div className="pt-6 border-t border-black/5">
+        <p className="text-xs tracking-[0.25em] text-[#7C8A6A] uppercase mb-6">
+          {notes}
+        </p>
 
-          <p className="text-xs tracking-[0.25em] text-[#7C8A6A] uppercase mb-6">
-            {notes}
-          </p>
-
-          <div className="text-sm space-y-1 mb-6 text-black/70">
-            <p>Wax Melt Shell — £4.50</p>
-            <p>Snap Bar — £2.50</p>
-            <p>Bubble Jar — £6.50</p>
-          </div>
-
-          <p className="text-xs text-black/50 mb-6">
-            £6 Post & Pack · 10% saving applied to collections over £25
-          </p>
-
-          <div className="space-y-4">
-
-            <select className="w-full border border-[#E5E5E5] rounded-full px-4 py-2 text-sm bg-white text-black/70">
-              <option>Select Format</option>
-              <option>Wax Melt Shell — £4.50</option>
-              <option>Snap Bar — £2.50</option>
-              <option>Bubble Jar — £6.50</option>
-            </select>
-
-            <div className="flex items-center justify-center gap-4">
-              <button
-                onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
-                className="px-3 py-1 border border-[#E5E5E5] rounded-full text-sm"
-              >
-                −
-              </button>
-
-              <span className="text-sm text-black/70">{qty}</span>
-
-              <button
-                onClick={() => setQty(qty + 1)}
-                className="px-3 py-1 border border-[#E5E5E5] rounded-full text-sm"
-              >
-                +
-              </button>
-            </div>
-
-          </div>
-
+        <div className="text-sm space-y-1 mb-6 text-black/70">
+          {formats.map(f => (
+            <p key={f.label}>{f.label}</p>
+          ))}
         </div>
+
+        <select
+          className="w-full border border-[#E5E5E5] rounded-full px-4 py-2 text-sm mb-4"
+          onChange={(e) =>
+            setSelectedFormat(formats[Number(e.target.value)])
+          }
+        >
+          {formats.map((f, index) => (
+            <option key={f.label} value={index}>
+              {f.label}
+            </option>
+          ))}
+        </select>
+
+        <div className="flex items-center justify-center gap-4 mb-4">
+          <button
+            onClick={() => setQty(qty > 1 ? qty - 1 : 1)}
+            className="px-3 py-1 border border-[#E5E5E5] rounded-full"
+          >
+            −
+          </button>
+          <span>{qty}</span>
+          <button
+            onClick={() => setQty(qty + 1)}
+            className="px-3 py-1 border border-[#E5E5E5] rounded-full"
+          >
+            +
+          </button>
+        </div>
+
+        <button
+          onClick={() =>
+            addToBasket(name, selectedFormat.label, selectedFormat.price, qty)
+          }
+          className="bg-[#7C8A6A] text-white px-6 py-2 rounded-full text-sm tracking-wide hover:opacity-90 transition"
+        >
+          Add to Basket
+        </button>
       </div>
     );
   };
 
   return (
-    <main className="min-h-screen bg-white text-black">
+    <main className="min-h-screen bg-white text-black pb-32">
 
-      {/* HERO */}
       <section className="max-w-4xl mx-auto px-6 py-24 text-center">
         <h1 className="text-4xl md:text-6xl tracking-[0.04em] font-light mb-6">
           TILLY & ROO
         </h1>
-
         <p className="text-xs tracking-[0.3em] text-[#7C8A6A] mb-4">
           NORFOLK · ENGLAND
         </p>
-
-        <p className="text-lg md:text-2xl tracking-[0.1em] mb-2">
+        <p className="text-lg md:text-2xl tracking-[0.1em]">
           Fragrance for Calm Interiors
         </p>
-
-        <p className="text-sm tracking-[0.15em] text-black/60">
-          Small Batch Collections
-        </p>
       </section>
 
-      {/* COSY EDIT */}
       <section className="py-20 px-6 bg-[#F7F7F4]">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl md:text-2xl tracking-[0.25em] mb-16 text-center text-[#7C8A6A]">
-            COSY EDIT
-          </h2>
-
-          <div className="grid md:grid-cols-2 gap-10">
-            {cosyScents.map(([n, d, notes]) => Card(n, d, notes))}
-          </div>
+        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-10">
+          {cosyScents.map(([n, d, notes]) => Card(n, d, notes))}
         </div>
       </section>
 
-      {/* FRESH EDIT */}
-      <section className="py-20 px-6 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-xl md:text-2xl tracking-[0.25em] mb-16 text-center text-[#7C8A6A]">
-            FRESH EDIT
-          </h2>
+      {/* Floating Basket */}
+      {basket.length > 0 && (
+        <div className="fixed bottom-0 left-0 w-full bg-white border-t border-black/10 shadow-lg p-6">
+          <div className="max-w-6xl mx-auto flex justify-between items-center">
+            <div>
+              <p className="text-sm">Subtotal: £{subtotal.toFixed(2)}</p>
+              <p className="text-sm">Post & Pack: £{postage.toFixed(2)}</p>
+              {discount > 0 && (
+                <p className="text-sm text-[#7C8A6A]">
+                  10% Saving Applied: -£{discount.toFixed(2)}
+                </p>
+              )}
+              <p className="font-medium">Total: £{total.toFixed(2)}</p>
+            </div>
 
-          <div className="grid md:grid-cols-2 gap-10">
-            {freshScents.map(([n, d, notes]) => Card(n, d, notes))}
+            <a
+              href={checkoutLink}
+              className="bg-[#7C8A6A] text-white px-8 py-3 rounded-full text-sm tracking-wide hover:opacity-90 transition"
+            >
+              Checkout via Email
+            </a>
           </div>
         </div>
-      </section>
-
+      )}
     </main>
   );
 }
